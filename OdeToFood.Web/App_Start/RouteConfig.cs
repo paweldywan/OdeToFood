@@ -15,6 +15,7 @@ namespace OdeToFood.Web
             //natomiast parametr "pathInfo" to 1/2/3/4. Przekierowanie pasuje do szablonu, więc zostanie zignorowane, nie zostanie obsłużone.
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            // /greeeting/ Jeśli nie znajdzie jakiegoś parametru i jest on wymagany, to wstawia domyślny, określony w defaults.
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
