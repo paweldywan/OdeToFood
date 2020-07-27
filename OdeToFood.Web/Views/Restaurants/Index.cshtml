@@ -2,13 +2,29 @@
 
 @{
     ViewBag.Title = "Index";
+    ViewBag.Message = "Hello!";
+    //Layout = null;
+    //Layout = "_TestLayout.cshtml";
+
+    //var x = 2 + 3;
 }
 
 <h2>Index</h2>
 
+@*scott@OdeToCode.com@(Model.Count())
+    @@OdeToCode*@
+@*@Model.Count()
+    @Html.Raw("<div></div>");*@
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
+@foreach (var item in Model)
+{
+    @Html.Partial("_RestaurantSummary", item)
+}
+
 <table class="table">
     <tr>
         <th>
@@ -19,6 +35,7 @@
 
     @foreach (var item in Model)
     {
+        //@:text
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -32,3 +49,7 @@
     }
 
 </table>
+
+@section footer{
+    <div>This is a custom footer</div>
+}
