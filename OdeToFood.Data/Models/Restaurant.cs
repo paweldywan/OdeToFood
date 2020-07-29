@@ -18,5 +18,8 @@ namespace OdeToFood.Data.Models
 
         [Display(Name="Type of food")]
         public CuisineType Cuisine { get; set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }

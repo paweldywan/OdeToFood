@@ -57,5 +57,10 @@ namespace OdeToFood.Data.Services
                 restaurants.Remove(restaurant);
             }
         }
+
+        public void Delete(Restaurant restaurant)
+        {
+            restaurants.Remove(restaurant);
+        }
     }
 }

@@ -58,6 +58,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Migrations\202007271044592_InitialCreate.cs" />
+    <Compile Include="Migrations\202007271044592_InitialCreate.Designer.cs">
+      <DependentUpon>202007271044592_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202007282105206_RowVersion.cs" />
+    <Compile Include="Migrations\202007282105206_RowVersion.Designer.cs">
+      <DependentUpon>202007282105206_RowVersion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CuisineType.cs" />
     <Compile Include="Models\Restaurant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,6 +78,14 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202007271044592_InitialCreate.resx">
+      <DependentUpon>202007271044592_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007282105206_RowVersion.resx">
+      <DependentUpon>202007282105206_RowVersion.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
