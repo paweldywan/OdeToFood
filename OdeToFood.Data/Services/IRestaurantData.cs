@@ -1,4 +1,5 @@
 ﻿using OdeToFood.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,10 +15,12 @@ namespace OdeToFood.Data.Services
 
         void Add(Restaurant restaurant);
 
-        void Update(Restaurant restaurant);
+        bool Update(Restaurant restaurant, Action<string, string> writeError);
 
         void Delete(int id);
 
         void Delete(Restaurant restaurant);
+
+        bool Delete(Restaurant restaurant, Action<string, string> writeError);
     }
 }

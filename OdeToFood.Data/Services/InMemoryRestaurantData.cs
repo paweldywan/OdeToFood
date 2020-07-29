@@ -26,8 +26,10 @@ namespace OdeToFood.Data.Services
             restaurant.Id = restaurants.Max(r => r.Id) + 1;
         }
 
-        public void Update(Restaurant restaurant)
+        public bool Update(Restaurant restaurant, Action<string, string> writeError)
         {
+            bool success = false;
+
             var existing = Get(restaurant.Id);
 
             if (existing != null)
@@ -35,7 +37,15 @@ namespace OdeToFood.Data.Services
                 existing.Name = restaurant.Name;
 
                 existing.Cuisine = restaurant.Cuisine;
+
+                success = true;
             }
+            else
+            {
+                writeError(string.Empty, "Unable to save changes. The object was deleted by another user.");
+            }
+
+            return success;
         }
 
         public Restaurant Get(int id)
@@ -61,6 +71,24 @@ namespace OdeToFood.Data.Services
         public void Delete(Restaurant restaurant)
         {
             restaurants.Remove(restaurant);
+        }
+
+        public bool Delete(Restaurant restaurant, Action<string, string> writeError)
+        {
+            bool result = false;
+
+            if (restaurants.Contains(restaurant))
+            {
+                restaurants.Remove(restaurant);
+
+                result = true;
+            }
+            else
+            {
+                writeError(string.Empty, "Unable to delete object. The object was deleted by another user.");
+            }
+
+            return result;
         }
     }
 }

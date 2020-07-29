@@ -89,57 +89,13 @@ namespace OdeToFood.Web.Controllers
                 //    return View(restaurant);
                 //}
 
-                try
-                {
-                    db.Update(restaurant);
+                bool success = db.Update(restaurant, ModelState.AddModelError);
 
+                if (success)
+                {
                     TempData["Message"] = "You have saved the restaurant!";
 
                     return RedirectToAction("Details", new { id = restaurant.Id });
-                }
-                catch (DbUpdateConcurrencyException ex)
-                {
-                    var entry = ex.Entries.Single();
-
-                    var clientEntry = entry.CurrentValues; //(Restaurant)entry.Entity;
-                    //var clientValues = (Restaurant)entry.Entity;
-
-                    var databaseEntry = entry.GetDatabaseValues();
-                    //var databaseValues = (Restaurant)databaseEntry.ToObject();
-
-                    if (databaseEntry == null)
-                    {
-                        ModelState.AddModelError(string.Empty, "Unable to save changes. The object was deleted by another user.");
-                    }
-                    else
-                    {
-                        var databaseValues = (Restaurant)databaseEntry.ToObject();
-
-                        foreach (var property in clientEntry.PropertyNames)
-                        {
-                            var databaseValue = databaseEntry[property];
-
-                            var clientValue = clientEntry[property];
-
-                            if (clientValue != databaseValue && !clientValue.Equals(databaseValue))
-                            {
-                                ModelState.AddModelError(property, "Current value: " + databaseValue);
-                            }
-                        }
-
-                        ModelState.AddModelError(string.Empty, "The record you attempted to edit "
-                            + "was modified by another user after you got the original value. The "
-                            + "edit operation was canceled and the current values in the database "
-                            + "have been displayed. If you still want to edit this record, click "
-                            + "the Save button again. Otherwise click the Back to List hyperlink.");
-
-                        restaurant.RowVersion = databaseValues.RowVersion;
-                    }
-                }
-                catch (RetryLimitExceededException /* dex */)
-                {
-                    //Log the error (uncomment dex variable name and add a line here to write a log.)
-                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
                 }
             }
 
@@ -147,7 +103,7 @@ namespace OdeToFood.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult Delete(int? id, bool? concurrencyError)
+        public ActionResult Delete2(int? id, bool? concurrencyError)
         {
             if (id == null)
             {
@@ -182,7 +138,7 @@ namespace OdeToFood.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(Restaurant restaurant /*int id, FormCollection form*/)
+        public ActionResult Delete2(Restaurant restaurant /*int id, FormCollection form*/)
         {
             //_ = form;
             try
@@ -206,6 +162,41 @@ namespace OdeToFood.Web.Controllers
 
                 return View(restaurant);
             }
+        }
+
+        [HttpGet]
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var model = db.Get(id.Value);
+
+            if (model == null)
+            {
+                //return View("NotFound");}
+
+                return HttpNotFound();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(Restaurant restaurant /*int id, FormCollection form*/)
+        {
+            //_ = form;
+            bool success = db.Delete(restaurant, ModelState.AddModelError);
+
+            if (success)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(restaurant);
         }
     }
 }
